@@ -9,6 +9,10 @@
 @import './notification/notification';
 @import './flow-bar/flow-bar';
 @import './back-button/back-button';
+@import './treetable/treetable';
+@import './progress-spinner/progress-spinner';
+@import './numericfield/numericfield';
+@import './combobox/combobox.clarity';
 
 html,
 body,
@@ -17,7 +21,7 @@ body,
 }
 
 .content-header {
-  padding: 0.5rem 0.5rem 0 0.5rem;
+  padding: 0.5rem 0.5rem 0 1rem;
   display: flex;
   flex: 0 0 auto;
 
@@ -29,7 +33,7 @@ body,
     display: flex;
     flex: 1 0 auto;
     justify-content: flex-end;
-    align-items: center;
+    align-items: start;
 
     .dropdown-menu {
       z-index: map-get($clr-layers, sidepanel) - 2;
@@ -62,6 +66,11 @@ body,
 
 // Add class card-active and make it not clickable even if clickable class is applied
 .card {
+  .list-group-item.list-group-item-action:hover {
+    background-color: $clr-global-selection-color;
+    cursor: pointer;
+  }
+
   @mixin card-active-after() {
     content: '';
     width: 0.1667rem;
@@ -78,7 +87,7 @@ body,
     @include card-active-after();
   }
 
-  @media (hover: hover) {
+  @mixin card-handle-hover() {
     &.selectable:hover::after {
       @include card-active-after();
     }
@@ -89,6 +98,7 @@ body,
       cursor: pointer;
       transform: translateY(-2px);
       transition: border 0.2s ease, transform 0.2s ease;
+      z-index: 1;
 
       &.card-active:hover {
         cursor: default;
@@ -96,6 +106,15 @@ body,
         transition: none;
       }
     }
+  }
+
+  // firefox needs this, because the hover in @media (hover: hover) is not supported
+  @-moz-document url-prefix() {
+    @include card-handle-hover();
+  }
+
+  @media (hover: hover) {
+    @include card-handle-hover();
   }
 }
 
@@ -107,4 +126,27 @@ body,
     white-space: nowrap;
     display: block;
   }
+}
+
+.datagrid-no-select-all .datagrid-header .datagrid-select .clr-checkbox-wrapper {
+  display: none;
+}
+
+// Enable highlighting of rows in a table by adding a new class 'highlight'
+.table {
+  tbody {
+    tr {
+      &.highlight {
+        background-color: $clr-global-selection-color;
+      }
+    }
+  }
+}
+
+form .required:after {
+  content: '*';
+  font-size: 0.58479532rem; // Approximately 14px.
+  line-height: 0.5rem;
+  color: $clr-red;
+  margin-left: 0.25rem;
 }

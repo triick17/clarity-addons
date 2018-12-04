@@ -16,3 +16,7 @@ export * from './breadcrumb/index';
 export * from './notification/index';
 export * from './flow-bar/index';
 export * from './back-button/index';
+export * from './progress-spinner/index';
+export * from './numericfield/index';
+export * from './treetable/index';
+export * from './combobox/index';
